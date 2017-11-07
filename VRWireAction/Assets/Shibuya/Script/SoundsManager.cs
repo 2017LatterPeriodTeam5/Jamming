@@ -34,7 +34,7 @@ public class SoundsManager : MonoBehaviour {
     private Dictionary<string, SoundData>  bgm_Table_ = new Dictionary<string, SoundData>();
     private Dictionary<string, SoundData> se_Table_ = new Dictionary<string, SoundData>();
 
-    void Start()
+    void Awake()
     {
         //フェード関係
         fadeActivate = false;
@@ -45,26 +45,14 @@ public class SoundsManager : MonoBehaviour {
         se_Source_Channel = new AudioSource[se_Channel];
         folderPass_ = "Assets/Shibuya/Resources/";
 
-        //テスト音源読み込み
-        LoadSound("testmusic", SoundType.bgm);
-        LoadSound("testse", SoundType.se);
-        LoadSound("testse2", SoundType.se);
-
-        //テストBGM再生
-        PlayBGM("testmusic");
-        SetVolume(0.0f);
-        FadeInOutActivate(10.0f, true);
+        ////テスト音源読み込み
+        //LoadSound("testmusic", SoundType.bgm);
+        //LoadSound("testse", SoundType.se);
+        //LoadSound("testse2", SoundType.se);
     }
 
     void Update()
     {
-        //テスト効果音再生
-        if (Input.GetKeyDown(KeyCode.L)) PlaySE("testse", 0);
-        if (Input.GetKeyDown(KeyCode.J)) PlaySE("testse2", 1);
-        //フェード処理テスト
-        if (Input.GetKeyDown(KeyCode.N)) FadeInOutActivate(5.0f, true);
-        if (Input.GetKeyDown(KeyCode.M)) FadeInOutActivate(5.0f, false);
-
         //フェード処理
         if (fadeActivate) FadeInOutCount(fadeTime, fadeIn);
     }
@@ -146,13 +134,12 @@ public class SoundsManager : MonoBehaviour {
                 return se_Source_;
             }
         }
-
         return null;
     }
     //音楽停止
     public void StopBGM()
     {
-        bgm_Source_.Stop();
+        if(bgm_Source_ != null)bgm_Source_.Stop();
     }
 
     //フェードの実行準備 

@@ -4,4 +4,25 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Shibuya/Scene/BaseScene.unity
+    guid: 7c0bc8e0ca00b6a4aa94d9a4aa876897
+  - enabled: 1
+    path: Assets/Shibuya/Scene/GameOverScene.unity
+    guid: 80136f1b18f9c8441b88955db9ced82a
+  - enabled: 1
+    path: Assets/Shibuya/Scene/GameScene.unity
+    guid: d9e3fe6f4b58e0740972b1795d547957
+  - enabled: 1
+    path: Assets/Shibuya/Scene/MenuScene.unity
+    guid: a7be95714e34fa343a04feac10042152
+  - enabled: 1
+    path: Assets/Shibuya/Scene/ResultScene.unity
+    guid: 6be556fa32f452646a31c21e2ab89a5b
+  - enabled: 1
+    path: Assets/Shibuya/Scene/TitleScene.unity
+    guid: 5b274fdbcabb9e94fb521d2cabcfa04b
+  - enabled: 1
+    path: "Assets/Hayashi/Scenes/\u03B1Stage.unity"
+    guid: a72e2a9474cb0c84588cdd2a403c2854

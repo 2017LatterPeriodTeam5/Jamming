@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MouseCameraController : MonoBehaviour
 {
+    
     /*==所持コンポーネント==*/
     private Transform m_Trans;
     private Rigidbody m_Rigid;
@@ -15,6 +16,10 @@ public class MouseCameraController : MonoBehaviour
     private float m_YAxisSensitivity = 40.0f;
     [SerializeField, TooltipAttribute("力の強さ")]
     private float m_Power = 3.0f;
+    [SerializeField, TooltipAttribute("レイの長さ")]
+    private float distance = 1.0f;
+    [SerializeField, TooltipAttribute("移動量")]
+    private float m_AxisSpeed = 5.0f;
 
     /*==内部設定変数==*/
     //カメラのトランスフォーム
@@ -29,7 +34,11 @@ public class MouseCameraController : MonoBehaviour
     private SpringJoint m_Joint2;
 
     private LineRenderer m_Line1;
+
+
     private bool m_ForceFlag = false;
+    private bool isGround = false;
+    private bool m_LeftClickFlag = false;
 
 
     public void Awake()
@@ -62,6 +71,19 @@ public class MouseCameraController : MonoBehaviour
 
     void Update()
     {
+        RaycastHit hit_Down;
+        if(Physics.Raycast(transform.position,Vector3.down,out hit_Down,distance))
+        {
+            isGround = true;
+        }
+        else
+        {
+            isGround = false;
+        }
+        //Debug.Log(isGround);
+        //Debug.DrawRay(transform.position, Vector3.down * distance, Color.red);
+        
+
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Cursor.visible = true;
@@ -107,11 +129,13 @@ public class MouseCameraController : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.X))
+        if (Input.GetKeyDown(KeyCode.X)||Input.GetMouseButtonDown(0))
         {
             RaycastHit hitInto;
             Ray ray = new Ray(m_Trans.position, m_Camera.forward);
-            Physics.Raycast(ray, out hitInto, Mathf.Infinity);
+            Physics.Raycast(ray, out hitInto, 50.0f);
+
+            m_LeftClickFlag = true;
 
             if (hitInto.collider == null) return;
 
@@ -135,11 +159,19 @@ public class MouseCameraController : MonoBehaviour
             m_Joint1.connectedBody = null;
             m_Joint2.connectedBody = null;
 
+            m_Rigid.useGravity = true;
             m_Line1.enabled = false;
         }
 
         m_Trans.Rotate(Vector3.up, Input.GetAxis("Mouse X") * m_XAxisSensitivity * Time.deltaTime);
         m_Camera.Rotate(Vector3.right, -Input.GetAxis("Mouse Y") * m_YAxisSensitivity * Time.deltaTime);
+
+        if(isGround==true)
+        {
+            //m_Rigid.velocity = transform.forward * Input.GetAxis("Vertical")*m_AxisSpeed + transform.right * Input.GetAxis("Horizontal")*m_AxisSpeed;
+            transform.position += transform.forward * Input.GetAxis("Vertical")*m_AxisSpeed*Time.deltaTime  
+                                + transform.right * Input.GetAxis("Horizontal")*m_AxisSpeed*Time.deltaTime ;
+        }
 
         m_Line1.SetPosition(0, m_Trans.position + m_Trans.forward * 2.0f);
         m_Line1.SetPosition(1, m_BasePoint1.position);

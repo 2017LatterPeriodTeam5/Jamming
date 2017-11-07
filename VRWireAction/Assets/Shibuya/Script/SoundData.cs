@@ -25,7 +25,7 @@ class SoundData
             //取得した音楽データ拡張子が対応しているか？
             if (!extension_.Contains(Path.GetExtension(filePath)))
             {
-                continue;
+                return;
             }
             //指定された音楽データの取得
             if (filePath.Contains(folderPass_ + soundName))
